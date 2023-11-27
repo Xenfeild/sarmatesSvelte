@@ -1,0 +1,27 @@
+@import 'style.scss';
+@import 'burgerSVG.scss';
+
+header {
+    width: 100%;
+    padding: 1rem 3rem;
+    display: flex;
+    background-color: $primary-color;
+    height: 70px;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    img{
+        width: 150px;
+    }
+    nav{
+        color: $secondary-color;
+        visibility: hidden;
+        ul  {
+            display: flex;
+            flex-direction: row;
+            font-size: 1.5rem;
+            width: auto;
+            gap: 1rem;
+         }
+        }
+    }

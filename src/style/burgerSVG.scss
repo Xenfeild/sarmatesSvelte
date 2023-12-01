@@ -1,25 +1,21 @@
 @import 'style.scss';
 
-#bugerIcon {
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    right: 0;
-    overflow: hidden;
-    svg {
-        transform: rotate(0) scale(0);
-        transition: transform 1.5s cubic-bezier(0.68, -0.95, 0.27, 2.95);
-        path {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            stroke-dasharray 1.5s cubic-bezier(0.4, 0, 0.2, 1),
-            stroke-dashoffset 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-            stroke 0.3s ease;
-        }
-    }
-}
 
-#burgerIcon:hover {
-    path {
+// button {
+//     color: transparent;
+// }
+.hb {
+    width: 50px;
+    margin: 0 auto;
+    display: block;
+    background-color: $primary-color;
+    border: none;
+    &:hover {
         stroke: $third-color;
     }
-}
+
+    &:hover path{
+        stroke: $third-color;
+    }
+  }
+

@@ -3,6 +3,7 @@ $secondary-color:#fff;
 $third-color: #ff9634;
 $fourth-color: #ff963481;
 $fith-color:#0d0d0d3f;
+$sixth-color: #0000007F;
 $title-font: 'Lexend Exa', sans-serif;
 
 * {
@@ -15,7 +16,6 @@ $title-font: 'Lexend Exa', sans-serif;
 
 body{
     background-color: $primary-color;
-    font-family: $title-font;
     height: 100vh;
     img{
         width: 100%;

@@ -3,11 +3,10 @@
   import frenchFlag from "/src/lib/img/icons8-france-circulaire-48.png";
   import englishFlag from "/src/lib/img/icons8-anglais-48.png";
   import spanishFlag from "/src/lib/img/icons8-espagne2-circulaire-48.png";
-  import { createEventDispatcher } from "svelte";
-  import fr from '../locales/fr.json';
-  import en from '../locales/en.json';
-  import es from '../locales/es.json';
+  // import { createEventDispatcher } from "svelte";
+  import { translations, loadTranslations } from "../stores/translationStore";
   import { onMount } from 'svelte';
+  import { get } from 'svelte/store';
 
   // navbar fonctions
   let isNavVisible = false;
@@ -15,44 +14,28 @@
   function toggleNav() {
     isNavVisible = !isNavVisible;
   }
- 
+
   // language selector
-  const dispatch = createEventDispatcher();
-  let translations = fr;
-  // let selectedLanguage = 'fr';
-  let selectedFlag = frenchFlag;
-  
+  let selectedFlag = englishFlag;
+
+  onMount(() => {
+    loadTranslations('fr'); // Charger les traductions par défaut
+  });
+
   function handleLanguageChange(lang: string) {
+    loadTranslations(lang);
     switch (lang) {
       case 'fr':
-        translations = fr;
         selectedFlag = frenchFlag;
         break;
       case 'en':
-        translations = en;
         selectedFlag = englishFlag;
         break;
       case 'es':
-        translations = es;
         selectedFlag = spanishFlag;
         break;
     }
-    dispatch('languageChange', { lang });
   }
-  
-  onMount(() => {
-    const userLang = navigator.language || navigator.language;
-    if (userLang.startsWith('fr')) {
-      handleLanguageChange('fr');
-    } else if (userLang.startsWith('en')) {
-      handleLanguageChange('en');
-    } else if (userLang.startsWith('es')) {
-      handleLanguageChange('es');
-    } else {
-      handleLanguageChange('fr'); // Langue par défaut si la langue détectée n'est pas supportée
-    }
-  });
-
 
 </script>
 
@@ -83,12 +66,12 @@
   </button>
   <nav class="{isNavVisible ? 'navVisible' : ''}">
     <ul>
-      <li>{translations.news}</li>
-      <li>{translations.live}</li>
-      <li>{translations.biography}</li>
-      <li>{translations.discography}</li>
-      <li>{translations.galleries}</li>
-      <li class="legal-mention">{translations.legalMentions}</li>
+      <li>{$translations.news}</li>
+      <li>{$translations.live}</li>
+      <li>{$translations.biography}</li>
+      <li>{$translations.discography}</li>
+      <li>{$translations.galleries}</li>
+      <li class="legal-mention">{$translations.legalMentions}</li>
       <div class="language-selector">
         <img src={selectedFlag} alt="Selected Language" class="selected">
         <div class="dropdown-content">

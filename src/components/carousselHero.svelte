@@ -1,21 +1,25 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { writable } from "svelte/store";
+    import { translations, loadTranslations } from "../stores/translationStore";
+
 
     // Store pour l'index actuel
     const currentIndex = writable(0);
 
     let items = [
         // Vos éléments de carrousel ici
-        { type: 'image', src: 'https://picsum.photos/800/400?image=1', alt: 'Image 1', text: 'Caption 1', cta: { url: '#', text: 'Learn More' } },
-        { type: 'video', src: 'https://www.w3schools.com/html/mov_bbb.mp4', alt: 'Video 1', text: 'Caption 2', cta: { url: '#', text: 'Watch Now' } },
-        { type: 'image', src: 'https://picsum.photos/800/400?image=2', alt: 'Image 1', text: 'Caption 1', cta: { url: '#', text: 'Learn More' } },
+        { type: 'image', src: 'https://picsum.photos/800/400?image=1', alt: 'Image 1', text: 'caption1', cta: { url: '#', text: 'Learn More' } },
+        { type: 'video', src: 'https://www.w3schools.com/html/mov_bbb.mp4', alt: 'Video 1', text: 'caption2', cta: { url: '#', text: 'Watch Now' } },
+        { type: 'image', src: 'https://picsum.photos/800/400?image=2', alt: 'Image 1', text: 'caption3', cta: { url: '#', text: 'Learn More' } },
         // Ajoutez d'autres éléments ici
     ];
 
-       let interval;
+    let interval : number;
 
     onMount(() => {
+        loadTranslations('fr'); // Charger les traductions par défaut
+        startCarousel();
         startCarousel();
         return () => clearInterval(interval);
     });
@@ -26,7 +30,7 @@
         }, 5000); // Change toutes les 5 secondes
     }
 
-    function selectItem(index) {
+    function selectItem(index: number) {
         currentIndex.set(index);
         clearInterval(interval);
         startCarousel();
@@ -43,10 +47,8 @@
                     <video src={item.src} muted loop autoplay></video>
                 {/if}
                 <div class="carousel-caption">
-                    <p>{item.text}</p>
-                    {#if item.cta}
-                        <a href={item.cta.url} class="carousel-cta">{item.cta.text}</a>
-                    {/if}
+                    <p>{$translations[item.text]}</p>
+                    <a href={item.cta.url}  class="carousel-cta">{$translations[item.cta.text]}</a>
                 </div>
             </div>
         {/each}

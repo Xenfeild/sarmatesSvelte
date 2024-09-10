@@ -87,9 +87,7 @@
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, transparent, rgba(0, 0, 0, 0.8) 70%); /* Utiliser un dégradé radial pour un effet circulaire avec le centre clair */
-
-    // z-index: 1;
+    background: radial-gradient(circle, transparent, rgba(0, 0, 0, 0.8) 70%);
 }
 
 </style>

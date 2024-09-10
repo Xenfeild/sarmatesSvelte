@@ -9,8 +9,11 @@
 
     let items = [
         // Vos éléments de carrousel ici
-        { type: 'image', src: 'https://picsum.photos/800/400?image=1', alt: 'Image 1', text: 'caption1', cta: { url: '#', text: 'Learn More' } },
-        { type: 'video', src: 'https://www.w3schools.com/html/mov_bbb.mp4', alt: 'Video 1', text: 'caption2', cta: { url: '#', text: 'Watch Now' } },
+        { type: 'image', src: 'https://picsum.photos/800/400?image=1', alt: 'Image 1', text: 'caption1', logos: [
+            { src: '../src/lib/img/spotify.png', alt: 'Logo 1', url: 'https://site1.com' },
+            { src: '../src/lib/img/deezer.png', alt: 'Logo 2', url: 'https://site2.com' }
+        ]},
+        { type: 'video', src: 'https://www.w3schools.com/html/mov_bbb.mp4', alt: 'Video 1', text: 'caption2', cta: { url: '#', text: 'watchVideo' } },
         { type: 'image', src: 'https://picsum.photos/800/400?image=2', alt: 'Image 1', text: 'caption3', cta: { url: '#', text: 'Learn More' } },
         // Ajoutez d'autres éléments ici
     ];
@@ -31,6 +34,7 @@
     }
 
     function selectItem(index: number) {
+        console.log(`selectItem called with index: ${index}`);
         currentIndex.set(index);
         clearInterval(interval);
         startCarousel();
@@ -48,104 +52,44 @@
                 {/if}
                 <div class="carousel-caption">
                     <p>{$translations[item.text]}</p>
-                    <a href={item.cta.url}  class="carousel-cta">{$translations[item.cta.text]}</a>
+                    {#if item.logos}
+                        <div class="carousel-logos">
+                            {#each item.logos as logo}
+                                <a href={logo.url} target="_blank" rel="noopener noreferrer">
+                                    <img src={logo.src} alt={logo.alt} class="carousel-logo" />
+                                </a>
+                            {/each}
+                        </div>
+                    {:else}
+                        <a href={item.cta.url} class="carousel-cta">{$translations[item.cta.text]}</a>
+                    {/if}
                 </div>
             </div>
         {/each}
     </div>
+    <div class="carouselShadow"></div>
     <div class="carousel-indicators">
         {#each items as _, index}
-            <button class:active={$currentIndex === index} on:click={() => selectItem(index)}></button>
+        <button class:active={$currentIndex === index} on:click={() => {
+            console.log(`Button clicked with index: ${index}`);
+            selectItem(index);
+        }}></button>
         {/each}
     </div>
-    <div class="carouselShadow"></div> <!-- Ajout de l'élément pour l'ombre -->
+    
 </div>
 
-<style>
-    .carousel {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    .carousel-inner {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-        height: 100%;
-    }
-
-    .carousel-item {
-        min-width: 100%;
-        height: 100%;
-        position: relative;
-        display: none; /* Masquer par défaut */
-    }
-
-    .carousel-item.active {
-        display: block; /* Afficher l'élément actif */
-    }
-
-    .carousel-item img,
-    .carousel-item video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .carousel-caption {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: rgba(0, 0, 0, 0.5);
-        color: white;
-        padding: 10px;
-        text-align: center;
-    }
-
-    .carousel-cta {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-    }
-
-    .carousel-indicators {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 5px;
-    }
-
-    .carousel-indicators button {
-        width: 10px;
-        height: 10px;
-        background-color: #fff;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    .carousel-indicators button.active {
-        background-color: #007bff;
-    }
+<style lang="scss">
+    @import "../src/style/carousselHero.scss";
 
     .carouselShadow {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-        background: rgba(0, 0, 0, 0.3);
-        box-shadow: inset var(--inset-x, 60px) var(--inset-y, 50px) var(--inset-blur, 150px) #000,
-                    inset calc(var(--inset-x, 60px) * -1) calc(var(--inset-y, 50px) * -1) var(--inset-blur, 150px) #000;
-        pointer-events: none; /* Pour s'assurer que l'ombre ne bloque pas les interactions */
-    }
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent, rgba(0, 0, 0, 0.8) 70%); /* Utiliser un dégradé radial pour un effet circulaire avec le centre clair */
+
+    // z-index: 1;
+}
+
 </style>

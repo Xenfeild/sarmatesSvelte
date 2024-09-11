@@ -3,29 +3,57 @@
     import { writable } from "svelte/store";
     import { translations, loadTranslations } from "../stores/translationStore";
 
-
     // Store pour l'index actuel
     const currentIndex = writable(0);
 
     let items = [
-        // Vos éléments de carrousel ici
-        { type: 'image', src: 'https://picsum.photos/800/400?image=1', alt: 'Image 1', text: 'caption1', logos: [
-            { src: '../src/lib/img/spotify.png', alt: 'Logo 1', url: 'https://site1.com' },
-            { src: '../src/lib/img/deezer.png', alt: 'Logo 2', url: 'https://site2.com' }
-        ]},
-        { type: 'video', src: 'https://www.w3schools.com/html/mov_bbb.mp4', alt: 'Video 1', text: 'caption2', cta: { url: '#', text: 'watchVideo' } },
-        { type: 'image', src: 'https://picsum.photos/800/400?image=2', alt: 'Image 1', text: 'caption3', cta: { url: '#', text: 'Learn More' } },
+        { 
+            type: 'image', 
+            src: 'pochette_sarmates.png', 
+            alt: 'Image 1', 
+            text: 'caption1', 
+            logos: [
+                { src: '../src/lib/img/spotify.png', alt: 'Spotify logo', url: 'https://open.spotify.com/intl-fr/artist/0W6mPvqyV2o6BxJsLh2u1N' },
+                { src: '../src/lib/img/deezer.png', alt: 'Deezer logo', url: 'https://www.deezer.com/fr/artist/270656742' }
+            ]
+        },
+        { 
+            type: 'video', 
+            src: 'introSarmates.mp4', 
+            alt: 'Video 1', 
+            text: 'caption2', 
+            cta: { url: '#', text: 'watchVideo' }
+        },
+        { 
+            type: 'image', 
+            src: 'Sarmates_shoot-29.jpg', 
+            alt: 'Image 1', 
+            text: 'caption3', 
+            cta: { url: '#', text: 'goToGaleries' }
+        },
         // Ajoutez d'autres éléments ici
     ];
 
-    let interval : number;
+    let interval: number;
 
     onMount(() => {
         loadTranslations('fr'); // Charger les traductions par défaut
+        adjustPaths();
         startCarousel();
-        startCarousel();
-        return () => clearInterval(interval);
+        window.addEventListener('resize', adjustPaths); // Ajouter un écouteur d'événement pour ajuster les chemins lors du redimensionnement de la fenêtre
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('resize', adjustPaths);
+        };
     });
+
+    function adjustPaths() {
+        const basePath = window.innerWidth < 785 ? '../src/lib/img/m/' : '../src/lib/img/';
+        items = items.map(item => ({
+            ...item,
+            src: `${basePath}${item.src}`
+        }));
+    }
 
     function startCarousel() {
         interval = setInterval(() => {
@@ -55,7 +83,7 @@
                     {#if item.logos}
                         <div class="carousel-logos">
                             {#each item.logos as logo}
-                                <a href={logo.url} target="_blank" rel="noopener noreferrer">
+                                <a href={logo.url} target="_blank" rel="noopener">
                                     <img src={logo.src} alt={logo.alt} class="carousel-logo" />
                                 </a>
                             {/each}
@@ -67,7 +95,7 @@
             </div>
         {/each}
     </div>
-    <div class="carouselShadow"></div>
+    <div class="carouselShadow"></div> <!-- Ajout de l'élément pour l'ombre -->
     <div class="carousel-indicators">
         {#each items as _, index}
         <button class:active={$currentIndex === index} on:click={() => {
@@ -76,18 +104,12 @@
         }}></button>
         {/each}
     </div>
-    
 </div>
+
 
 <style lang="scss">
     @import "../src/style/carousselHero.scss";
 
-    .carouselShadow {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, transparent, rgba(0, 0, 0, 0.8) 70%);
-}
+
 
 </style>

@@ -9,6 +9,11 @@
     import Header from "../components/header.svelte";
     import CarousselHero from "../components/carousselHero.svelte";
     import { translations, loadTranslations } from '../stores/translationStore';
+    import News from "../components/News.svelte";
+    import Live from "../components/Live.svelte";
+    import Biography from "../components/Biography.svelte";
+    import Discography from "../components/Discography.svelte";
+    import Galeries from "../components/Galeries.svelte";
 
     onMount(() => {
         const userLang = navigator.language || navigator.language;
@@ -21,19 +26,16 @@
     // }
 </script>
 
-<Header/>
+
 <main>
-    <!-- <div class="useless"></div> -->
-    <!-- <Carousel autoplay autoplayDuration={2000} style="height: 100vh;">        
-        <img src="https://picsum.photos/200/300" alt="image1"/>
-        <img src="src/lib/img/bifrost2022.jpg" alt="image2"/>
-    </Carousel> -->
-    <!-- <CarousselHero /> -->
-    <div class="test">
-        <CarousselHero />
-        <!-- <CarousselSlider /> -->
+    <Header/>
+    <CarousselHero />
+    <News />
+    <Live />
+    <Biography />
+    <Discography />
+    <Galeries />
         
-    </div>
     <div class="test2">
         <h1>{$translations.welcome}</h1>
         <p>{$translations.working}</p>
